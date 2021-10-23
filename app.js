@@ -1,37 +1,53 @@
-const computationControllerBtn = document.getElementById(
-  "computation-controller"
-);
-const randomNumberBtn = document.getElementById("random-number-controller");
-const output = document.getElementById("output");
-const clearBtn = document.getElementById("clear-btn");
-const statusBar = document.getElementById("status");
+const uploadInput = document.getElementById("profile-picture-input");
+const filter = document.querySelector("#filter");
+const output = document.querySelector("#output");
 
-const myWorker = new Worker("worker.js");
+const fileReader = new FileReader();
+const image = new Image();
+const worker = new Worker("backgroundImageProcessor.js");
 
-function processHeavyData() {
-  statusBar.textContent = "status : processing data...";
+let imageData, canvasContext;
 
-  const arbitraryData = 1000000;
+filter.oninput = sendToWorker;
 
-  myWorker.postMessage([arbitraryData]);
+fileReader.addEventListener("load", (e) => {
+  const imageData = e.target.result;
+  image.src = imageData;
+});
 
-  console.log("message posted to worker");
-}
+uploadInput.addEventListener("change", (e) => {
+  const [myImage] = e.target.files;
+  fileReader.readAsDataURL(myImage);
+});
 
-function clearOutput() {
-  output.textContent = "";
-  statusBar.textContent = "status: idle";
-}
+image.addEventListener("load", () => {
+  const canvas = document.createElement("CANVAS");
+  const width = image.width;
+  const height = image.height;
 
-function renderRandomNumber() {
-  output.textContent = Math.random();
-}
+  canvas.width = width;
+  canvas.height = height;
+  canvasContext = canvas.getContext("2d");
 
-computationControllerBtn.addEventListener("click", processHeavyData);
+  canvasContext.drawImage(image, 0, 0);
 
-myWorker.onmessage = function (e) {
-  statusBar.textContent = "status: done";
+  imageData = canvasContext.getImageData(0, 0, width, height);
+
+  sendToWorker();
+  output.replaceChildren(canvas);
+});
+
+worker.onmessage = (e) => {
+  canvasContext.putImageData(e.data, 0, 0);
+  document.body.appendChild(canvas);
 };
 
-randomNumberBtn.addEventListener("click", renderRandomNumber);
-clearBtn.addEventListener("click", clearOutput);
+worker.onmessage = receiveFromWorker;
+
+function sendToWorker() {
+  worker.postMessage({ imageData, filter: filter.value });
+}
+
+function receiveFromWorker(e) {
+  canvasContext.putImageData(e.data, 0, 0);
+}

@@ -6,36 +6,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
-      .btn {
-        padding: 1rem;
-        font-size: 1.2rem;
-        background-color: white;
-        border-radius: 0.7rem;
+      #profile-picture-input{
+        width:0px;
+        height:0px;
+        overflow:hidden;
       }
-      .btn:hover {
+
+      label{
+        display:inline-block;
+        border:1px black dashed;
+        padding:1rem;
         cursor: pointer;
-      }
-      #output {
-        padding: 2rem;
-        margin: 4rem auto 0;
-        border: 1px black solid;
-        width: 400px;
-        height: 100px;
-      }
-      #status {
-        border: 1px black solid;
-        width: 400px;
-        padding: 1rem;
-        display: inline-block;
       }
     </style>
   </head>
-  <body>
-    <button class="btn" id="random-number-controller">get random number</button>
-    <button class="btn" id="computation-controller">process data</button>
-    <span id="status">status : idle</span>
+    <input type="file" accept="image/*" id="profile-picture-input" />
+    <label for="profile-picture-input">Upload image</label>
+    <p>
+      <label>
+        Choose a filter to apply
+        <select id="filter">
+          <option value="none">none</option>
+          <option value="grayscale">grayscale</option>
+          <option value="brighten">brighten by 20%</option>
+        </select>
+      </label>
+    </p>
+    <br/>
     <div id="output"></div>
-    <button class="btn" id="clear-btn">clear</button>
     <script src="app.js"></script>
   </body>
 </html>
