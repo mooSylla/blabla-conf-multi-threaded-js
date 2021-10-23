@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .btn {
+        padding: 1rem;
+        font-size: 1.2rem;
+        background-color: white;
+        border-radius: 0.7rem;
+      }
+      .btn:hover {
+        cursor: pointer;
+      }
+      #output {
+        padding: 2rem;
+        margin: 4rem auto 0;
+        border: 1px black solid;
+        width: 400px;
+        height: 100px;
+      }
+      #status {
+        border: 1px black solid;
+        width: 400px;
+        padding: 1rem;
+        display: inline-block;
+      }
+    </style>
+  </head>
+  <body>
+    <button class="btn" id="random-number-controller">get random number</button>
+    <button class="btn" id="computation-controller">process data</button>
+    <span id="status">Status: idle</span>
+    <div id="output"></div>
+    <button class="btn" id="clear-btn">clear</button>
+    <script src="app.js"></script>
+  </body>
+</html>
